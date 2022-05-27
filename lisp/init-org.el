@@ -306,6 +306,25 @@ prepended to the element after the #+HEADER: tag."
                 org-tree-slide-skip-comments t
                 org-tree-slide-skip-outline-level 3))
 
+  (use-package org-download
+    :after org
+    :defer nil
+    :custom
+    (org-download-method 'directory)
+    (org-download-image-dir "images")
+    (org-download-heading-lvl nil)
+    (org-download-timestamp "%Y%m%d-%H%M%S_")
+    (org-image-actual-width 300)
+    (org-download-screenshot-method "/usr/local/bin/pngpaste %s")
+    :bind
+    ("C-S-y" . org-download-screenshot)
+    :config
+    (require 'org-download)
+    ;;  #+ATTR_ORG: :width 60%
+    (setq org-image-actual-width nil))
+
+
+
   ;; Pomodoro
   (use-package org-pomodoro
     :custom-face
