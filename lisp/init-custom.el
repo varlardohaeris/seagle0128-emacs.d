@@ -29,7 +29,7 @@
 ;;
 
 ;;; Code:
-
+(setq package-check-signature nil)
 (defgroup centaur nil
   "Centaur Emacs customization."
   :group 'convenience
@@ -80,28 +80,31 @@
 ;; Emacs Lisp Package Archive (ELPA)
 ;; @see https://github.com/melpa/melpa and https://elpa.emacs-china.org/.
 (defcustom centaur-package-archives-alist
-  '((melpa    . (("gnu"    . "http://elpa.gnu.org/packages/")
-                 ("nongnu" . "http://elpa.nongnu.org/nongnu/")
-                 ("melpa"  . "http://melpa.org/packages/")))
-    (emacs-cn . (("gnu"    . "http://1.15.88.122/gnu/")
-                 ("nongnu" . "http://1.15.88.122/nongnu/")
-                 ("melpa"  . "http://1.15.88.122/melpa/")))
-    (bfsu     . (("gnu"    . "http://mirrors.bfsu.edu.cn/elpa/gnu/")
-                 ("nongnu" . "http://mirrors.bfsu.edu.cn/elpa/nongnu/")
-                 ("melpa"  . "http://mirrors.bfsu.edu.cn/elpa/melpa/")))
-    (netease  . (("gnu"    . "http://mirrors.163.com/elpa/gnu/")
-                 ("nongnu" . "http://mirrors.163.com/elpa/nongnu/")
-                 ("melpa"  . "http://mirrors.163.com/elpa/melpa/")))
-    (sjtu     . (("gnu"    . "http://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/gnu/")
-                 ("nongnu" . "http://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/nongnu/")
-                 ("melpa"  . "http://mirrors.sjtug.sjtu.edu.cn/emacs-elpa/melpa/")))
-    (tuna     . (("gnu"    . "http://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/")
-                 ("nongnu" . "http://mirrors.tuna.tsinghua.edu.cn/elpa/nongnu/")
-                 ("melpa"  . "http://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/")))
-    (ustc     . (("gnu"    . "http://mirrors.ustc.edu.cn/elpa/gnu/")
-                 ("nongnu" . "http://mirrors.ustc.edu.cn/elpa/nongnu/")
-                 ("melpa"  . "http://mirrors.ustc.edu.cn/elpa/melpa/"))))
-  "A list of the package archives."
+  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
+                      (not (gnutls-available-p))))
+         (proto (if no-ssl "http" "http")))
+    `(,(cons 'melpa
+             `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
+               ,(cons "melpa" (concat proto "://melpa.org/packages/"))))
+      ,(cons 'bfsu
+             `(,(cons "gnu"   (concat proto "://mirrors.bfsu.edu.cn/elpa/gnu/"))
+               ,(cons "melpa" (concat proto "://mirrors.bfsu.edu.cn/elpa/melpa/"))))
+      ,(cons 'local
+             `(,(cons "gnu"   (concat proto "://localhost/gnu/"))
+               ,(cons "melpa" (concat proto "://localhost/melpa/"))))
+      ,(cons 'emacs-china
+             `(,(cons "gnu"   (concat proto "://elpa.emacs-china.org/gnu/"))
+               ,(cons "melpa" (concat proto "://elpa.emacs-china.org/melpa/"))))
+      ,(cons 'netease
+             `(,(cons "gnu"   (concat proto "://mirrors.163.com/elpa/gnu/"))
+               ,(cons "melpa" (concat proto "://mirrors.163.com/elpa/melpa/"))))
+      ,(cons 'ustc
+             `(,(cons "gnu"   (concat proto "://mirrors.ustc.edu.cn/elpa/gnu/"))
+               ,(cons "melpa" (concat proto "://mirrors.ustc.edu.cn/elpa/melpa/"))))
+      ,(cons 'tuna
+             `(,(cons "gnu"   (concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
+               ,(cons "melpa" (concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))))
+  "The package archives group list."
   :group 'centaur
   :type '(alist :key-type (symbol :tag "Archive group name")
                 :value-type (alist :key-type (string :tag "Archive name")
@@ -144,20 +147,19 @@
 The keywords `:sunrise' and `:sunset' can be used for the time
 if `calendar-latitude' and `calendar-longitude' are set.
 For example:
-  \\='((:sunrise . doom-one-light)
+  '((:sunrise . doom-one-light)
     (:sunset  . doom-one))"
   :group 'centaur
   :type '(alist :key-type (string :tag "Time")
                 :value-type (symbol :tag "Theme")))
 
-(defcustom centaur-system-themes '((light . doom-one-light)
-				                   (dark  . doom-one))
-  "List of themes related the system appearance.
-
-It's only available on macOS currently."
-  :group 'centaur
-  :type '(alist :key-type (symbol :tag "Appearance")
-                :value-type (symbol :tag "Theme")))
+(when (boundp 'ns-system-appearance)
+  (defcustom centaur-system-themes '((light . doom-one-light)
+				                     (dark  . doom-one))
+    "List of themes related the system appearance. It's only available on macOS."
+    :group 'centaur
+    :type '(alist :key-type (symbol :tag "Appearance")
+                  :value-type (symbol :tag "Theme"))))
 
 (defcustom centaur-theme 'default
   "The color theme."
@@ -234,24 +236,24 @@ Native tree-sitter is introduced in 29."
 
 (defcustom centaur-prettify-symbols-alist
   '(("lambda" . ?λ)
-    ("<-"     . ?←)
-    ("->"     . ?→)
-    ("->>"    . ?↠)
-    ("=>"     . ?⇒)
-    ("map"    . ?↦)
-    ("/="     . ?≠)
-    ("!="     . ?≠)
-    ("=="     . ?≡)
-    ("<="     . ?≤)
-    (">="     . ?≥)
-    ("=<<"    . (?= (Br . Bl) ?≪))
-    (">>="    . (?≫ (Br . Bl) ?=))
-    ("<=<"    . ?↢)
-    (">=>"    . ?↣)
-    ("&&"     . ?∧)
-    ("||"     . ?∨)
-    ("not"    . ?¬))
-  "A list of symbol prettifications.
+    ("<-" . ?←)
+    ("->" . ?→)
+    ("->>" . ?↠)
+    ("=>" . ?⇒)
+    ("map" . ?↦)
+    ("/=" . ?≠)
+    ("!=" . ?≠)
+    ("==" . ?≡)
+    ("<=" . ?≤)
+    (">=" . ?≥)
+    ("=<<" . (?= (Br . Bl) ?≪))
+    (">>=" . (?≫ (Br . Bl) ?=))
+    ("<=<" . ?↢)
+    (">=>" . ?↣)
+    ("&&" . ?∧)
+    ("||" . ?∨)
+    ("not" . ?¬))
+  "Alist of symbol prettifications.
 Nil to use font supports ligatures."
   :group 'centaur
   :type '(alist :key-type string :value-type (choice character sexp)))
@@ -265,10 +267,10 @@ Nil to use font supports ligatures."
     (":ID:"           . ?🪪)
     (":END:"          . ?🔚)
 
-    ("#+ARCHIVE:"     . ?📦)
-    ("#+AUTHOR:"      . ?👤)
-    ("#+CREATOR:"     . ?💁)
-    ("#+DATE:"        . ?📆)
+    ("#+ARCHIVE:" . ?📦)
+    ("#+AUTHOR:" . ?👤)
+    ("#+CREATOR:" . ?💁)
+    ("#+DATE:" . ?📆)
     ("#+DESCRIPTION:" . ?⸙)
     ("#+EMAIL:"       . ?📧)
     ("#+HEADERS"      . ?☰)
