@@ -92,7 +92,7 @@
                    ("melpa"  . ,(format "%s://1.15.88.122/melpa/" proto))))
       (local    . (("gnu"    . "http://localhost/gnu/")
                    ("nongnu" . "http://localhost/nongnu/")
-                   ("melpa"  . "http://localhost/melpa/")))
+                   ("mepla" . "http://localhost/mepla")))
       (bfsu     . (("gnu"    . ,(format "%s://mirrors.bfsu.edu.cn/elpa/gnu/" proto))
                    ("nongnu" . ,(format "%s://mirrors.bfsu.edu.cn/elpa/nongnu/" proto))
                    ("melpa"  . ,(format "%s://mirrors.bfsu.edu.cn/elpa/melpa/" proto))))
