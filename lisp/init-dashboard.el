@@ -104,7 +104,13 @@
                                     (agenda    . "nf-oct-calendar")
                                     (projects  . "nf-oct-briefcase")
                                     (registers . "nf-oct-database"))
+          dashboard-set-footer t
+          dashboard-footer (format "Powered by wujiahua, %s" (format-time-string "%Y"))
+          dashboard-footer-icon (cond
+                                 ((icons-displayable-p)
+                                  (nerd-icons-octicon "nf-oct-heart" :height 1.2 :face 'nerd-icons-lred))
 
+                                 (t (propertize ">" 'face 'dashboard-footer)))
           dashboard-set-navigator t
           dashboard-navigator-buttons
           `(((,(when (icons-displayable-p)
