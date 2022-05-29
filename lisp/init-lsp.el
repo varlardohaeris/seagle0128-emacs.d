@@ -40,7 +40,7 @@
      :hook ((prog-mode . (lambda ()
                            (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'makefile-mode)
                              (eglot-ensure))))
-            ((markdown-mode yaml-mode) . eglot-ensure))))
+            (markdown-mode . lsp-deferred))))
   ('lsp-mode
    ;; Performace tuning
    ;; @see https://emacs-lsp.github.io/lsp-mode/page/performance/
@@ -57,7 +57,9 @@
      :hook ((prog-mode . (lambda ()
                            (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'makefile-mode)
                              (lsp-deferred))))
-            ((markdown-mode yaml-mode) . lsp-deferred)
+            (markdown-mode . lsp-deferred)
+            (c-mode . lsp)
+            (c++-mode . lsp)
             (lsp-mode . (lambda ()
                           ;; Integrate `which-key'
                           (lsp-enable-which-key-integration)
@@ -305,7 +307,7 @@
            ((sym &as &SymbolInformation :kind :location (&Location :uri))
             project-root)
            "Convert the match returned by `lsp-mode` into a candidate string."
-           (let* ((sanitized-kind (if (length> lsp-ivy-symbol-kind-icons kind) kind 0))
+           (let* ((sanitized-kind (if (< kind (length lsp-ivy-symbol-kind-icons)) kind 0))
                   (type (elt lsp-ivy-symbol-kind-icons sanitized-kind))
                   (typestr (if lsp-ivy-show-symbol-kind (format "%s " type) ""))
                   (pathstr (if lsp-ivy-show-symbol-filename
@@ -323,9 +325,9 @@
      :bind (:map lsp-mode-map
             ("<f5>" . dap-debug)
             ("M-<f5>" . dap-hydra))
-     :hook ((after-init     . dap-auto-configure-mode)
-            (dap-stopped    . (lambda (_) (dap-hydra)))
-            (dap-terminated . (lambda (_) (dap-hydra/nil)))
+     :hook ((after-init . dap-auto-configure-mode)
+            (dap-stopped . (lambda (_args) (dap-hydra)))
+            (dap-terminated . (lambda (_args) (dap-hydra/nil)))
 
             (python-mode            . (lambda () (require 'dap-python)))
             (ruby-mode              . (lambda () (require 'dap-ruby)))
@@ -539,24 +541,6 @@
      :init (when (executable-find "python3")
              (setq lsp-pyright-python-executable-cmd "python3")))
 
-   ;; C/C++/Objective-C
-   (use-package ccls
-     :defines projectile-project-root-files-top-down-recurring
-     :hook ((c-mode c++-mode objc-mode cuda-mode) . (lambda () (require 'ccls)))
-     :config
-     (with-eval-after-load 'projectile
-       (setq projectile-project-root-files-top-down-recurring
-             (append '("compile_commands.json" ".ccls")
-                     projectile-project-root-files-top-down-recurring)))
-     (with-no-warnings
-       ;; FIXME: fail to call ccls.xref
-       ;; @see https://github.com/emacs-lsp/emacs-ccls/issues/109
-       (cl-defmethod my-lsp-execute-command
-         ((_server (eql ccls)) (command (eql ccls.xref)) arguments)
-         (when-let ((xrefs (lsp--locations-to-xref-items
-                            (lsp--send-execute-command (symbol-name command) arguments))))
-           (xref--show-xrefs xrefs nil)))
-       (advice-add #'lsp-execute-command :override #'my-lsp-execute-command)))
 
    ;; Swift
    (use-package lsp-sourcekit)
@@ -574,7 +558,7 @@
   ;; https://github.com/emacs-lsp/lsp-mode/issues/377
   (cl-defmacro lsp-org-babel-enable (lang)
     "Support LANG in org source code block."
-    (cl-check-type lang string)
+    (cl-check-type lang stringp)
     (let* ((edit-pre (intern (format "org-babel-edit-prep:%s" lang)))
            (intern-pre (intern (format "lsp--%s" (symbol-name edit-pre)))))
       `(progn
