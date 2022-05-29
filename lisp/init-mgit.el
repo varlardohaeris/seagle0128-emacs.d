@@ -2,13 +2,13 @@
 ;;; Commentary:
 ;;; Code:
 
-(add-to-list 'load-path "~/.emacs.d/site-lisp/magit/lisp")
+(add-to-list 'load-path "~/.emacs.d/local/mgit/lisp")
 (require 'magit)
 
 (with-eval-after-load 'info
   (info-initialize)
   (add-to-list 'Info-directory-list
-               "~/.emacs.d/site-lisp/magit/Documentation/"))
+               "~/.emacs.d/local/mgit/docs/"))
 
 
 
