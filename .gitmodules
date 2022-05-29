@@ -1,0 +1,3 @@
+[submodule "local/PG"]
+	path = local/PG
+	url = https://github.com/ProofGeneral/PG
