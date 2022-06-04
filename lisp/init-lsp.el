@@ -66,7 +66,7 @@
             ((markdown-mode yaml-mode yaml-ts-mode) . lsp-deferred)
             (c-mode . lsp)
             (c++-mode . lsp)
-            (haskell-mode . lsp)
+            ;; (haskell-mode . lsp)
             (lsp-mode . (lambda ()
                           ;; Integrate `which-key'
                           (lsp-enable-which-key-integration)
