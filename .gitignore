@@ -74,6 +74,7 @@ session*
 site-lisp/
 snippets/
 templates/
+snippets/
 thumbs/
 tldr/
 tmp*
