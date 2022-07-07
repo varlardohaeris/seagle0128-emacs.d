@@ -310,17 +310,17 @@ prepended to the element after the #+HEADER: tag."
     :after org
     :defer nil
     :custom
-    (org-download-method 'directory)
+    (org-download-method 'attach)
     (org-download-image-dir "images")
     (org-download-heading-lvl nil)
     (org-download-timestamp "%Y%m%d-%H%M%S_")
-    (org-image-actual-width 300)
     (org-download-screenshot-method "/usr/local/bin/pngpaste %s")
     :bind
-    ("C-S-y" . org-download-screenshot)
+    ("C-S-y" . org-download-clipboard)
     :config
     (require 'org-download)
-    ;;  #+ATTR_ORG: :width 60%
+    (setq org-download-image-attr-list
+          '("#+ATTR_HTML: :width 50% :align center"))
     (setq org-image-actual-width nil))
 
 

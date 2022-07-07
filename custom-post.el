@@ -20,3 +20,4 @@
 (require 'init-fstar)
 (require 'init-proof)
 (require 'init-ocaml)
+(require 'init-mgit)
