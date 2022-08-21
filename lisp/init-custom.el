@@ -110,37 +110,6 @@
                 :value-type (alist :key-type (string :tag "Archive name")
                                    :value-type (string :tag "URL or directory name"))))
 
-(defcustom centaur-package-archives-alist
-  (let* ((no-ssl (and (memq system-type '(windows-nt ms-dos))
-                      (not (gnutls-available-p))))
-         (proto (if no-ssl "http" "http")))
-    `(,(cons 'melpa
-             `(,(cons "gnu"   (concat proto "://elpa.gnu.org/packages/"))
-               ,(cons "melpa" (concat proto "://melpa.org/packages/"))))
-      ,(cons 'bfsu
-             `(,(cons "gnu"   (concat proto "://mirrors.bfsu.edu.cn/elpa/gnu/"))
-               ,(cons "melpa" (concat proto "://mirrors.bfsu.edu.cn/elpa/melpa/"))))
-      ,(cons 'local
-             `(,(cons "gnu"   (concat proto "://localhost/gnu/"))
-               ,(cons "melpa" (concat proto "://localhost/melpa/"))))
-      ,(cons 'emacs-china
-             `(,(cons "gnu"   (concat proto "://elpa.emacs-china.org/gnu/"))
-               ,(cons "melpa" (concat proto "://elpa.emacs-china.org/melpa/"))))
-      ,(cons 'netease
-             `(,(cons "gnu"   (concat proto "://mirrors.163.com/elpa/gnu/"))
-               ,(cons "melpa" (concat proto "://mirrors.163.com/elpa/melpa/"))))
-      ,(cons 'ustc
-             `(,(cons "gnu"   (concat proto "://mirrors.ustc.edu.cn/elpa/gnu/"))
-               ,(cons "melpa" (concat proto "://mirrors.ustc.edu.cn/elpa/melpa/"))))
-      ,(cons 'tuna
-             `(,(cons "gnu"   (concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/gnu/"))
-               ,(cons "melpa" (concat proto "://mirrors.tuna.tsinghua.edu.cn/elpa/melpa/"))))))
-  "The package archives group list."
-  :group 'centaur
-  :type '(alist :key-type (symbol :tag "Archive group name")
-                :value-type (alist :key-type (string :tag "Archive name")
-                                   :value-type (string :tag "URL or directory name"))))
-
 (defcustom centaur-package-archives 'melpa
   "Set package archives from which to fetch."
   :group 'centaur

@@ -21,3 +21,4 @@
 (require 'init-proof)
 (require 'init-ocaml)
 (require 'init-mgit)
+(require 'init-been-utils)
