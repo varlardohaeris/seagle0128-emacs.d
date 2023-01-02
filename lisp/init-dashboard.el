@@ -109,7 +109,6 @@
           dashboard-footer-icon (cond
                                  ((icons-displayable-p)
                                   (nerd-icons-octicon "nf-oct-heart" :height 1.2 :face 'nerd-icons-lred))
-
                                  (t (propertize ">" 'face 'dashboard-footer)))
           dashboard-set-navigator t
           dashboard-navigator-buttons

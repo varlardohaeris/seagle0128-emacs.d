@@ -14,7 +14,7 @@
 (setq centaur-logo "~/.emacs.d/black-hole.png")   ; Logo file or nil (official logo)
 ;; (setq centaur-full-name "user name")           ; User full name
 ;; (setq centaur-mail-address "user@email.com")   ; Email address
-(setq centaur-proxy "127.0.0.1:7890")          ; HTTP/HTTPS proxy
+(setq centaur-proxy "127.0.0.1:7890")             ; HTTP/HTTPS proxy
 (setq centaur-org-directory "~/notes/org-roam-notes")
 ;; (setq centaur-socks-proxy "127.0.0.1:7890")    ; SOCKS proxy
 ;; (setq centaur-server nil)                      ; Enable `server-mode' or not: t or nil
@@ -87,7 +87,7 @@
 ;; (setq confirm-kill-emacs 'y-or-n-p)
 
 ;; Enable proxy
-;; (proxy-http-enable)
+(proxy-http-enable)
 ;; (proxy-socks-enable)
 
 ;; Display on the specified monitor
