@@ -104,7 +104,6 @@
                                     (registers . "database"))
 
           dashboard-set-footer t
-          dashboard-footer (format "Powered by wujiahua, %s" (format-time-string "%Y"))
           dashboard-footer-icon (cond ((icon-displayable-p)
                                        (all-the-icons-faicon "heart"
                                                              :height 1.1
@@ -146,7 +145,7 @@
       "Insert copyright in the footer."
       (when dashboard-set-footer
         (dashboard-insert-center
-         (propertize (format "\nPowered by Vincent Zhang, %s\n" (format-time-string "%Y"))
+         (propertize (format "\nPowered by wujiahua, %s\n" (format-time-string "%Y"))
                      'face 'font-lock-comment-face))))
     (advice-add #'dashboard-insert-footer :after #'my-dashboard-insert-copyright)
 

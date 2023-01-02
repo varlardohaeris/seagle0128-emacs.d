@@ -28,6 +28,9 @@
 ;; Customization.
 ;;
 
+;; added by wujiahua for common lisp
+(setq inferior-lisp-program "sbcl")
+
 ;;; Code:
 (setq package-check-signature nil)
 (defgroup centaur nil
