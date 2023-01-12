@@ -40,7 +40,7 @@
      :hook ((prog-mode . (lambda ()
                            (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'makefile-mode)
                              (eglot-ensure))))
-            (markdown-mode . lsp-deferred))))
+            ((markdown-mode yaml-mode yaml-ts-mode) . eglot-ensure))))
   ('lsp-mode
    ;; Performace tuning
    ;; @see https://emacs-lsp.github.io/lsp-mode/page/performance/
@@ -57,10 +57,10 @@
      :hook ((prog-mode . (lambda ()
                            (unless (derived-mode-p 'emacs-lisp-mode 'lisp-mode 'makefile-mode)
                              (lsp-deferred))))
-            (markdown-mode . lsp-deferred)
             (c-mode . lsp)
             (c++-mode . lsp)
             ;; (haskell-mode . lsp)
+            ((markdown-mode yaml-mode yaml-ts-mode) . lsp-deferred)
             (lsp-mode . (lambda ()
                           ;; Integrate `which-key'
                           (lsp-enable-which-key-integration)
@@ -108,9 +108,10 @@
 
        ;; Enable `lsp-mode' in sh/bash/zsh
        (defun my-lsp-bash-check-sh-shell (&rest _)
-         (and (eq major-mode 'sh-mode)
+         (and (memq major-mode '(sh-mode bash-ts-mode))
               (memq sh-shell '(sh bash zsh))))
        (advice-add #'lsp-bash-check-sh-shell :override #'my-lsp-bash-check-sh-shell)
+       (add-to-list 'lsp-language-id-configuration '(bash-ts-mode . "shellscript"))
 
        ;; Only display icons in GUI
        (defun my-lsp-icons-get-symbol-kind (fn &rest args)
@@ -330,16 +331,16 @@
             (dap-stopped . (lambda (_args) (dap-hydra)))
             (dap-terminated . (lambda (_args) (dap-hydra/nil)))
 
-            (python-mode            . (lambda () (require 'dap-python)))
-            (ruby-mode              . (lambda () (require 'dap-ruby)))
-            (go-mode                . (lambda () (require 'dap-go)))
-            (java-mode              . (lambda () (require 'dap-java)))
-            ((c-mode c++-mode)      . (lambda () (require 'dap-lldb)))
-            ((objc-mode swift-mode) . (lambda () (require 'dap-lldb)))
-            (php-mode               . (lambda () (require 'dap-php)))
-            (elixir-mode            . (lambda () (require 'dap-elixir)))
-            ((js-mode js2-mode)     . (lambda () (require 'dap-chrome)))
-            (powershell-mode        . (lambda () (require 'dap-pwsh))))
+            ((python-mode python-ts-mode)            . (lambda () (require 'dap-python)))
+            ((ruby-mode ruby-ts-mode)                . (lambda () (require 'dap-ruby)))
+            ((go-mode go-ts-mode)                    . (lambda () (require 'dap-go)))
+            ((java-mode java-ts-mode jdee-mode)      . (lambda () (require 'dap-java)))
+            ((c-mode c-ts-mode c++-mode c++-ts-mode) . (lambda () (require 'dap-lldb)))
+            ((objc-mode swift-mode)                  . (lambda () (require 'dap-lldb)))
+            (php-mode                                . (lambda () (require 'dap-php)))
+            (elixir-mode                             . (lambda () (require 'dap-elixir)))
+            ((js-mode js2-mode js-ts-mode)           . (lambda () (require 'dap-chrome)))
+            (powershell-mode                         . (lambda () (require 'dap-pwsh))))
      :init (when (executable-find "python3")
              (setq dap-python-executable "python3")))
 
@@ -536,9 +537,9 @@
        (interactive)
        (when (and (executable-find "yapf") buffer-file-name)
          (call-process "yapf" nil nil nil "-i" buffer-file-name)))
-     :hook (python-mode . (lambda ()
-                            (require 'lsp-pyright)
-                            (add-hook 'after-save-hook #'lsp-pyright-format-buffer t t)))
+     :hook (((python-mode python-ts-mode) . (lambda ()
+                                              (require 'lsp-pyright)
+                                              (add-hook 'after-save-hook #'lsp-pyright-format-buffer t t))))
      :init (when (executable-find "python3")
              (setq lsp-pyright-python-executable-cmd "python3")))
 
@@ -552,9 +553,9 @@
 
    ;; Java
    (use-package lsp-java
-     :hook (java-mode . (lambda () (require 'lsp-java))))))
+     :hook ((java-mode java-ts-mode jdee-mode) . (lambda () (require 'lsp-java))))))
 
-(when (memq centaur-lsp '(lsp-mode eglot))
+(unless centaur-lsp
   ;; Enable LSP in org babel
   ;; https://github.com/emacs-lsp/lsp-mode/issues/377
   (cl-defmacro lsp-org-babel-enable (lang)
