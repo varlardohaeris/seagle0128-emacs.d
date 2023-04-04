@@ -90,10 +90,9 @@
       (emacs-cn . (("gnu"    . ,(format "%s://1.15.88.122/gnu/" proto))
                    ("nongnu" . ,(format "%s://1.15.88.122/nongnu/" proto))
                    ("melpa"  . ,(format "%s://1.15.88.122/melpa/" proto))))
-    (local     . (("gnu"    . "http://localhost/gnu/")
-                  ("nongnu" . "http://localhost/nongnu/")
-                  ("melpa"  . "http://localhost/melpa/")))
-
+      (local    . (("gnu"    . "http://localhost/gnu/")
+                   ("nongnu" . "http://localhost/nongnu/")
+                   ("melpa"  . "http://localhost/melpa/")))
       (bfsu     . (("gnu"    . ,(format "%s://mirrors.bfsu.edu.cn/elpa/gnu/" proto))
                    ("nongnu" . ,(format "%s://mirrors.bfsu.edu.cn/elpa/nongnu/" proto))
                    ("melpa"  . ,(format "%s://mirrors.bfsu.edu.cn/elpa/melpa/" proto))))
