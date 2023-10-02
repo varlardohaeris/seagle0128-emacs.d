@@ -4,11 +4,6 @@
 ;;;       Put your own configurations in custom-post.el to override default configurations.
 ;;; Code:
 
-;; (setq package-archives
-;;       '(("melpa" . "http://localhost/melpa/")
-;;         ("org"   . "http://localhost/org/")
-;;         ("gnu"   . "http://localhost/gnu/")))
-
 (setq package-check-signature nil)
 (setq native-comp-async-report-warnings-errors nil)
 (setq centaur-logo "~/.emacs.d/black-hole.png")   ; Logo file or nil (official logo)
@@ -19,7 +14,7 @@
 ;; (setq centaur-socks-proxy "127.0.0.1:7890")    ; SOCKS proxy
 ;; (setq centaur-server nil)                      ; Enable `server-mode' or not: t or nil
 ;; (setq centaur-icon nil)                        ; Display icons or not: t or nil
-(setq centaur-package-archives 'local)            ; Package repo: melpa, emacs-china, netease, ustc, local or tuna
+(setq centaur-package-archives 'tuna)             ; Package repo: melpa, emacs-china, netease, ustc, local or tuna
 ;; (setq centaur-theme 'auto)                     ; Color theme: auto, random, system, default, pro, dark, light, warm, cold, day or night
 ;; (setq centaur-completion-style 'minibuffer)    ; Completion display style: minibuffer or childframe
 ;; (setq centaur-dashboard nil)                   ; Display dashboard at startup or not: t or nil
