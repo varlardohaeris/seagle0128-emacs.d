@@ -107,6 +107,8 @@
      (use-package consult-lsp
        :bind (:map lsp-mode-map
               ("C-M-." . consult-lsp-symbols)))
+     ;; disable agda
+     (add-to-list 'lsp-prevent-auto-start 'agda2-mode)
 
      (with-no-warnings
        ;; Disable `lsp-mode' in `git-timemachine-mode'

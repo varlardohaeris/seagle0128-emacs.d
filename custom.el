@@ -89,6 +89,8 @@
 ;; Enable proxy
 (proxy-http-enable)
 ;; (proxy-socks-enable)
+(setq desktop-dirname "~/.emacs.d/")
+(desktop-save-mode 1)
 
 ;; Display on the specified monitor
 ;; (when (and (> (length (display-monitor-attributes-list)) 1)

@@ -92,7 +92,7 @@
                    ("melpa"  . ,(format "%s://1.15.88.122/melpa/" proto))))
       (local    . (("gnu"    . "http://localhost/gnu/")
                    ("nongnu" . "http://localhost/nongnu/")
-                   ("mepla" . "http://localhost/mepla")))
+                   ("mepla " . "http://localhost/mepla")))
       (bfsu     . (("gnu"    . ,(format "%s://mirrors.bfsu.edu.cn/elpa/gnu/" proto))
                    ("nongnu" . ,(format "%s://mirrors.bfsu.edu.cn/elpa/nongnu/" proto))
                    ("melpa"  . ,(format "%s://mirrors.bfsu.edu.cn/elpa/melpa/" proto))))
@@ -293,6 +293,13 @@ Nil to use font supports ligatures."
 
 ;; Load `custom-file'
 (setq custom-file (expand-file-name "custom.el" user-emacs-directory))
+
+(defun prevent-lsp-in-agda2-mode ()
+  (when (eq major-mode 'agda2-mode)
+    (remove-hook 'agda2-mode-hook #'lsp-deferred)
+    (remove-hook 'agda2-mode-hook #'lsp)))
+
+(add-hook 'agda2-mode-hook 'prevent-lsp-in-agda2-mode)
 
 (provide 'init-custom)
 
