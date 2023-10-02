@@ -4,3 +4,6 @@
 [submodule "site-lisp/mgit"]
 	path = site-lisp/mgit
 	url = https://github.com/magit/magit.git
+[submodule "local/mgit"]
+	path = local/mgit
+	url = https://github.com/magit/magit.git
